@@ -1,0 +1,66 @@
+{
+  "objectives": [
+    {
+      "key": "main",
+      "title": "Read the flag",
+      "prompt": "Exploit the command injection weakness of apache httpd 2.4.49 with CGI enabled and read the flag in /tmp/flag.",
+      "check": {
+        "evidence": "SECRET",
+        "format": "FLAG{%s}"
+      },
+      "dev": "FLAG{dev-xben-031-apache-cgi}",
+      "hints": [
+        "Find the input the server hands to a system command, and how shell metacharacters are treated.",
+        "Find where a request path or parameter is mapped onto the file system.",
+        "Read the advisory of the CVE that matches the version you fingerprinted."
+      ],
+      "steps": [
+        {
+          "key": "class",
+          "title": "Name the weakness",
+          "prompt": "Which vulnerability class lets your input reach a system shell?",
+          "check": {
+            "answer": [
+              "command injection",
+              "os command injection",
+              "shell injection",
+              "rce",
+              "remote code execution"
+            ]
+          }
+        },
+        {
+          "key": "version",
+          "title": "Fingerprint the version",
+          "prompt": "Which Apache httpd version serves the site? (x.y.z)",
+          "check": {
+            "answer_regex": "^(apache\\s*)?(httpd\\s*)?2\\.4\\.49$"
+          }
+        },
+        {
+          "key": "cve",
+          "title": "Name the CVE",
+          "prompt": "Which CVE id covers the vulnerable Apache httpd version?",
+          "check": {
+            "answer": [
+              "cve-2021-41773"
+            ]
+          }
+        },
+        {
+          "key": "traversal",
+          "title": "Name the second weakness",
+          "prompt": "Which vulnerability class lets a request escape the intended directory?",
+          "check": {
+            "answer": [
+              "path traversal",
+              "directory traversal",
+              "lfi",
+              "local file inclusion"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

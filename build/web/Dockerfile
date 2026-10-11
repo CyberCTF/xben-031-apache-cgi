@@ -18,3 +18,10 @@ RUN apt-get install -y curl
 
 ARG FLAG=FLAG{17565f0164e2939bd47fc7be82b531721862de31110439e7223e850695866607}
 RUN echo $FLAG > /tmp/flag
+
+# CyberCTF per-player flag: the flag above is only the development fallback. ctf-entrypoint.sh
+# puts the player's flag (CTF_FLAG_MAIN) in its place at every start, then runs the original
+# entrypoint and command, repeated here unchanged.
+COPY ctf-entrypoint.sh /usr/local/bin/ctf-entrypoint.sh
+ENTRYPOINT ["/usr/local/bin/ctf-entrypoint.sh"]
+CMD ["httpd-foreground"]
